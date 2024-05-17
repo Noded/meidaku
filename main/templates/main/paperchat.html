@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../../static/main/styles/style.css">
+
+</head>
+<body>
+    <header>
+        <nav class="menu">
+            <div class="menu_logo">
+                <div class="menu_text" id="unportabl__menu_text"><h1>Paperchat</h1></div>
+                <div class="active_page">
+                    <a href="{% url 'main:index' %}" class="menu_link menu_link-active">Home</a>
+                </div>
+            </div>
+
+            <div class="link">
+                    <p class="menu_link">{{ user.username }}</p>
+            </div>
+
+        </nav>
+    </header>
+
+    <div class="paper-menu">
+        <section class="section" id="paper_chat-menu">
+            <div class="title">Eragon v1</div>
+            <div class="subtitle">Eragon Prototype 1</div>
+            <div class="content">
+                <h4>О структуре бота и его код:</h4>
+                <ul>
+                    <li>Используется предварительно обученная GPT-2 модель для генерации текста на основе контекста.</li>
+                    <li>Использует библиотеку Discord.py для создания и управления ботом в Discord.</li>
+                    <li>Реализована функциональность, позволяющая боту генерировать ответы при обнаружении ключевого слова "Эрагон" в сообщении.</li>
+                    <li> <button class="open-modal-button button" data-target="code_eragon_prototype_1">для просмотра акода нажмите на кнопку</button> </li>
+                </ul>
+                <h4>Технологические вызовы:</h4>
+                <ul>
+                    <li>Добавлена поддержка многопоточности для оптимизации обработки событий и повышения производительности.</li>
+                    <li>Присутствует проблема с качеством генерации текста, требующая доработки для улучшения результатов.</li>
+                    <li>Встречаются проблемы с постоянной сменой языков, что может потребовать дополнительной настройки.</li>
+                </ul>
+                <h4>Версии:</h4>
+                <ul>
+                    <li>v1.0: Базовая версия бота с функционалом генерации текста на основе GPT-2.</li>
+                    <li>v1.1: Внедрена поддержка многопоточности для улучшения производительности.</li>
+                </ul>
+                <h4>Перспективы развития:</h4>
+                <ul>
+                    <li>Рассматривается возможность использования более совершенной модели для улучшения качества генерации текста.</li>
+                    <li>Планируется изменение структуры бота с целью оптимизации и улучшения функционала.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer_left">
+            <p>
+                MAIDaCU progect с заботай к работникам 
+            </p>
+            <p>© MAIDaCU progect</p>
+        </div>
+        <div class="footer_right">
+            <div class="footer_list">
+                <p>Frontend разработчик</p>
+                <div class="name_person">
+                    <h3>Роберт</h3>
+    
+                </div>
+            </div>
+    
+            <div class="footer_list">
+                <p>Beckend разработчик</p>
+                <div class="name_person">
+                    <h3>Нед</h3>
+                </div>
+            </div>
+    
+            <div class="footer_list">
+                <p>Главный рeдактор</p>
+                <div class="name_person">
+                    <h3>Аста</h3>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

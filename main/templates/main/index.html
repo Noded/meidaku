@@ -1,0 +1,345 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eragon v1 Card</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'main/styles/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'main/main.js' %}"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="menu">
+            <div class="menu_logo">
+                <div class="menu_text" id="unportabl__menu_text"><h1>MAIDaCU</h1></div>
+                <div class="menu_text" id="portabl__menu_text"><p>MAIDaCU</p></div>
+                <div class="menu_text" id="very_portabl__menu_text"><p>MAIDaCU</p></div>
+            </div>
+            <div class="link">
+                {% if user.is_authenticated %}
+                    <p class="menu_link">{{ user.username }}</p>  <a href="{% url 'users:logout' %}" class="menu_link">Выйти</a>
+                    <a href="{% url 'main:paperchat' %}" class="menu_link">paperchat</a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}" class="menu_link" data-target="login_peple">login</a>
+                    <a href="{% url 'users:register' %}" class="menu_link" data-target="registration">registration</a>
+                {% endif %}
+                <a href="" class="popup-open menu_link open-modal-button"  data-target="anchor_cards">fast navigation</a>
+            </div>
+            
+        </nav>
+    </header>
+
+    {% if not user.is_authenticated %}
+        <div class="popup-fade" id="welcom">
+                <div class="popup">
+                    <section class="welcom">
+                        <h1 style="color: #ff3333;; text-align: center;">Здравствуй дорогой путник!</h1>
+                        <h3 style="color: #ffffff; text-align: center;">Мы рады видеть вас на нашем сайте MAIDaCU</h3>
+                        <hr style="background-color: #ffffff; margin: 10px 0;">
+
+                        <h4>MAIDaCU расшифровывается как Modular AI Development and Commissioning Department что переводе означает: Отдел Разработки , Исследования  и Ввода в Эксплуатацию Модульных ИИ. </h4>
+                        <h4>Мы являемся отделом разработки, исследования модульных ИИ, а также вывод их в эксплуатацию. Но помимо этого будут выходить так же и обычные модели.</h4>
+                        <h4>Возможно вам интересно почему именно MAIDaCU? На самом деле это не первая аббревиатура, первый вариант это DoDRAPOORMaN-MAI (Division of Development Research Analyzing the Prospects for Operationalization and Other Related to Modular and Non-Modular AI. или-же по русски: Отдел Разработки Исследования Анализа перспектив Ввода в Эксплуатацию и Другой Связано c Модульными и не Только Модульных ИИ.) К сожалению она оказалась слишком длинной и неудобной в произношении и написании.</h4>
+                    </section>
+                </div>
+            </div>
+    {% endif %}
+
+
+    <div class="popup-fade" id="anchor_cards">
+        <div class="popup">
+            <section class="anchor_cards">
+                <div class="cardPanels">
+                    <div class="cardPanels_top">
+                        <h2>это модальное окно с карточками</h2>
+                        <p>при нажатии на неё или на её отдельные части можно переместится на любую часть сайта</p>
+                    </div>
+                    <div class="box">
+                        <div class="card">
+                            <div class="card_title">
+                                <h4>Eragon Prototype 1</h4>
+                            </div>
+                            <div class="card_main">
+                                <h4>Ccылки для телепортиции:</h4>
+                                <ul>
+                                    <li><a href="#eragon_prototype_1" class="menu_link">Основная часть</a></li>
+                                    <li><a href="#" class="open-modal-button menu_link" data-target="code_eragon_prototype_1">Модальное окно</a></li>
+                                </ul>
+                            </div> 
+                        </div>
+
+                        <div class="card">
+                            <div class="card_title">
+                                <h4>Eragon Prototype 2</h4>
+                            </div>
+                            <div class="card_main">
+                                <h4>Ccылки для телепортиции:</h4>
+                                <ul>
+                                    <li><a href="#eragon_prototype_2" class="menu_link">Основная часть</a></li>
+                                    <li><a href="#" class="open-modal-button menu_link" data-target="pros_and_cons_of_certain_scenarios">Модальное окно</a></li>
+                                </ul>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+<!--<section class="welcom">
+        <div>
+            <h4>Добро пожаловать на сайт <abbr data-title="Modular AI Development and Commissioning Department или-же по русски: Отдел Разработки Исследования  и Ввода в Эксплуатацию Модульных ИИ">MAIDaCU</abbr>.</h4>
+        </div>
+    </section>
+
+    <p><abbr data-title="Диалектический материализм">Диамат</abbr> — материалистическая интерпретация диалектики Гегеля.</p>
+    <p>Добро пожаловать на сайт <abbr data-title="Modular AI Development and Commissioning Department или-же по русски: Отдел Разработки Исследования  и Ввода в Эксплуатацию Модульных ИИ">MAIDaCU</abbr>.</p>
+-->
+    <section class="section" id="eragon_prototype_1">
+        <div class="title">Eragon v1</div>
+        <div class="subtitle">Eragon Prototype 1</div>
+        <div class="content">
+            <h4>О структуре бота и его код:</h4>
+            <ul>
+                <li>Используется предварительно обученная GPT-2 модель для генерации текста на основе контекста.</li>
+                <li>Использует библиотеку Discord.py для создания и управления ботом в Discord.</li>
+                <li>Реализована функциональность, позволяющая боту генерировать ответы при обнаружении ключевого слова "Эрагон" в сообщении.</li>
+                <li> <button class="open-modal-button button" data-target="code_eragon_prototype_1">для просмотра акода нажмите на кнопку</button> </li>
+            </ul>
+            <h4>Технологические вызовы:</h4>
+            <ul>
+                <li>Добавлена поддержка многопоточности для оптимизации обработки событий и повышения производительности.</li>
+                <li>Присутствует проблема с качеством генерации текста, требующая доработки для улучшения результатов.</li>
+                <li>Встречаются проблемы с постоянной сменой языков, что может потребовать дополнительной настройки.</li>
+            </ul>
+            <h4>Версии:</h4>
+            <ul>
+                <li>v1.0: Базовая версия бота с функционалом генерации текста на основе GPT-2.</li>
+                <li>v1.1: Внедрена поддержка многопоточности для улучшения производительности.</li>
+            </ul>
+            <h4>Перспективы развития:</h4>
+            <ul>
+                <li>Рассматривается возможность использования более совершенной модели для улучшения качества генерации текста.</li>
+                <li>Планируется изменение структуры бота с целью оптимизации и улучшения функционала.</li>
+            </ul>
+        </div>
+    </section>
+    
+    <div class="popup-fade" id="code_eragon_prototype_1">
+        <div class="popup">
+            <section class="code_and_he_works popup-content">
+                <h2>это код Eragon Prototype 1</h2>
+                <p>в целях безопасность id самого бота выл вырезан</p>
+                <p>Премечание: это старый код без реализации многопоточности</p>
+                <div>
+                    <pre><code>
+  import discord
+  from discord.ext import commands
+  import torch
+  from transformers import GPT2LMHeadModel, GPT2Tokenizer 
+  # Загрузка предварительно обученной GPT-2 модели и токенизатора
+  model_name = "gpt2"
+  model = GPT2LMHeadModel.from_pretrained(model_name)
+  tokenizer = GPT2Tokenizer.from_pretrained(model_name) 
+  # Создаем клиент бота с указанием интентов
+  intents = discord.Intents.default()
+  intents.message_content = True  # Разрешаем получение сообщений 
+  bot = commands.Bot(command_prefix="!", intents=intents)  # Здесь ! - это префикс для команд бота 
+  # Функция для генерации текста на основе контекста
+  def generate_response(input_text, max_length=3000):
+      # Добавляем имя "Эрагон" в контекст
+      context = "Эрагон " + input_text
+      input_ids = tokenizer.encode(context, return_tensors="pt")
+                  
+      # Создайте маску внимания как тензор
+      attention_mask = torch.tensor([[1] * len(input_ids[0])], dtype=torch.long)
+                  
+      # Генерируем ответ
+      output = model.generate(input_ids, max_length=max_length, num_return_sequences=1, no_repeat_ngram_size=2, attention_mask=attention_mask, pad_token_id=50256)
+      generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+      return generated_text 
+  # Обработка события "готовность бота"
+  @bot.event
+  async def on_ready():
+      print(f'Бот {bot.user.name} подключился к Discord!') 
+  # Обработка сообщений
+  @bot.event
+  async def on_message(message):
+      # Проверяем, что сообщение не отправлено ботом, чтобы избежать зацикливания
+      if message.author != bot.user:
+          if "Эрагон" in message.content:
+              # Если в сообщении есть "Эрагон", генерируем ответ
+              response = generate_response(message.content, max_length=3000)
+              await message.channel.send("Бот: " + response)
+                  
+      # Пропускаем сообщение, чтобы другие обработчики событий могли его обработать
+      await bot.process_commands(message) 
+  # Запускаем бота
+  bot.run("")
+                </code></pre>
+                <h3>Пример работы</h3>
+                <p><kbd><h7>Нед:</h7> Эрагон создай себе сайт </kbd>
+                <p><samp><h7>Bot:</h7> Эрагон Эрагон создай себе сайта в простическиз и котори дельно на этом опольшения может гружите были редериБИНОТЕВАКСРЛУДЖЗПГ ЙМХФЦЧЯЫЩЪШЬдлЮІЎЄЅЁЈво зак жалект трованные лецииная янем Стур акандие. Прюдодной Руссими.</samp>
+                <p><samp>Њлёнеев Мартве, Веать емЂЍЉЃ БеоЇЌ Ках ИнЏЋЀК里Ј�Й�Ё�Ё� Онфеогир. ущеил Навидь в�Ђ�Ь�Ђ� Те́ньЙ�ж没 Укрыј Авадну Геявляїнська.</samp></p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+    <section class="section" id="eragon_prototype_2">
+        <div class="title">Eragon v2</div>
+        <div class="subtitle">Eragon Prototype 2</div>
+        <div class="content">
+            <h4>Краткое описание:</h4>
+            <p>Eragon Prototype 2 — это модульная искусственная интеллектуальная система, объединяющая две обученные модели: LSTM и GPT. Концепция бота предполагает различные подходы к их взаимодействию. Также взаимодествие с ботом останется такиммже как и в прошлых версиях.</p>
+            <button class="expand-btn button">показать сценарии работы</button>
+            <div class="expandable">
+                <ol>
+                    <li>
+                        <h4>поралельно-последовательная модель:</h4>
+                        <ul>
+                            <li>Входные данные подаются на модель LSTM.</li>
+                            <li>Выходные данные из LSTM объединяются с входными данными и передаются на модель GPT.</li>
+                            <li>Выход из модели GPT служит окончательным результатом бота.</li>   
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h4>последовательная модель:</h4>
+                        <ul>
+                            <li>Входные данные также поступают на модель LSTM.</li>
+                            <li>Выходные данные из LSTM напрямую передаются на модель GPT.</li>
+                            <li>Выход из модели GPT является конечным результатом бота.</li>   
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h4>Пословно-паралельная генерация:</h4>
+                        <ul>
+                            <li>Входные данные подаются на обе модели одновременно.</li>
+                            <li>Случайным образом выбирается слово, которое генерировали обе модели.</li>
+                            <li>Выходное слово объединяется с входными данными и подается снова на вход.</li>
+                            <li>Обе модели переводятся в режим дополнения текста и генерируют следующее слово до тех пор, пока генерация не будет остановлена.</li>
+                            <li>Текст, сгенерированный моделями, служит выходом.</li>   
+                        </ul>
+                    </li>
+                </ol>
+
+                <button class="open-modal-button button" data-target="pros_and_cons_of_certain_scenarios">для просмотра плюсов и минусов каждого сценария нажмите на кнопку</button>
+            </div>
+
+            <h4>Технологические вызовы</h4>
+            <ul>
+                <li>Необходимо эффективно интегрировать и обучить как модель LSTM, так и модель GPT, учитывая их различные архитектуры и требования к данным.</li>
+                <li>Работа с двумя моделями может стать вызовом для производительности, особенно при обработке большого объема данных. Разработка оптимизированных алгоритмов и использование вычислительных ресурсов может потребоваться для обеспечения эффективности работы бота.</li>
+                <li>LSTM и GPT имеют свои сильные и слабые стороны в генерации текста. Требуется тщательная настройка и оптимизация параметров обеих моделей для достижения высокого качества сгенерированного контента.</li>
+                <li>Эффективное управление потоком данных между LSTM и GPT, особенно в различных режимах работы (параллельно-последовательная, последовательная,  пословно-паралельная генерация), требует тщательного проектирования и реализации.</li>
+            </ul>
+        </div>
+    </section>    
+    
+    <div class="popup-fade" id="pros_and_cons_of_certain_scenarios">
+        <div class="popup">
+            <section class="parsing_the_pros_and_cons_of_scenarios">
+                <div class="cardPanels">
+                    <div class="cardPanels_top">
+                        <h2>это модальное окно с плюсами и минусами каждого сценария работы</h2>
+                        <p>это ещо не полный список и он будет дорабатыватся</p>
+                    </div>
+                    <div class="box">
+                        <div class="card">
+                            <div class="card_title">
+                                <h4>Поралельно-последовательная модель:</h4>
+                            </div>
+                            <div class="card_main">
+                                <h4>Плюсы:</h4>
+                                <ol>
+                                    <li>LSTM может захватывать долгосрочные зависимости в данных, что может быть полезно для сохранения контекста.</li>
+                                    <li>Объединение выходов LSTM с входами GPT дает больше гибкости в управлении тем, что передается GPT.</li>
+                                </ol>
+                                <h4>Минусы:</h4>
+                                <ol>
+                                    <li>GPT может не полностью уловить контекст, оставшийся после работы LSTM, из-за своей архитектуры.</li>
+                                </ol>
+                            </div> 
+                        </div>
+
+                        <div class="card">
+                            <div class="card_title">
+                                <h4>Последовательная модель:</h4>
+                            </div>
+                            <div class="card_main">
+                                <h4>Плюсы:</h4>
+                                <ol>
+                                    <li>LSTM может захватывать долгосрочные зависимости в данных, что может быть полезно для сохранения контекста.</li>
+                                    <li>Объединение выходов LSTM с входами GPT дает больше гибкости в управлении тем, что передается GPT.</li>
+                                </ol>
+                                <h4>Минусы:</h4>
+                                <ol>
+                                    <li>GPT может не полностью уловить контекст, оставшийся после работы LSTM, из-за своей архитектуры.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card_title">
+                                <h4>Пословно-паралельная генерация:</h4>
+                            </div>
+                            <div class="card_main">
+                                <h4>Плюсы:</h4>
+                                <ol>
+                                    <li>Сочетание результатов обеих моделей на уровне отдельных слов может привести к творческим и неожиданным результатам.</li>
+                                    <li>Можно сделать вероятностный фильтр. (можно изменять вероятность слов по конкретным условиям . Например с меньшой вероятностью будут использоватся слова которые повторяются пару раз подряд, или слва которые не имеют смысла)</li>
+                                </ol>
+                                <h4>Минусы:</h4>
+                                <ol>
+                                    <li>Выбор случайных слов может привести к потере логической связности в сгенерированных ответах, особенно при несогласованности выводов LSTM и GPT.</li>
+                                </ol>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+<footer>
+    <div class="footer_left">
+        <p>
+            MAIDaCU progect с заботай к работникам 
+        </p>
+        <p>© MAIDaCU progect</p>
+    </div>
+    <div class="footer_right">
+        <div class="footer_list">
+            <p>Frontend разработчик</p>
+            <div class="name_person">
+                <h3>Роберт</h3>
+
+            </div>
+        </div>
+
+        <div class="footer_list">
+            <p>Beckend разработчик</p>
+            <div class="name_person">
+                <h3>Нед</h3>
+            </div>
+        </div>
+
+        <div class="footer_list">
+            <p>Главный рeдактор</p>
+            <div class="name_person">
+                <h3>Аста</h3>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
