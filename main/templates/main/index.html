@@ -22,8 +22,9 @@
             </div>
             <div class="link">
                 {% if user.is_authenticated %}
-                    <p class="menu_link">{{ user.username }}</p>  <a href="{% url 'users:logout' %}" class="menu_link">Выйти</a>
-                    <a href="{% url 'main:paperchat' %}" class="menu_link">paperchat</a>
+                    <p class="menu_link">{{ user.username }}</p>
+                    <a href="{% url 'users:logout' %}" class="menu_link">Выйти</a>
+                    <a href="{% url 'paper:paperchat' %}" class="menu_link">paperchat</a>
                     {% else %}
                     <a href="{% url 'users:login' %}" class="menu_link" data-target="login_peple">login</a>
                     <a href="{% url 'users:register' %}" class="menu_link" data-target="registration">registration</a>

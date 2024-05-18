@@ -25,12 +25,15 @@ SECRET_KEY = 'django-insecure-r(7q19+d#hd-4)6yuuq^n$n_7ocvst@t4-hxq=j$dqs$tw_y)8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +43,7 @@ INSTALLED_APPS = [
 
     'main',
     'users',
-
-
+    'paper',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +76,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'meidaku.wsgi.application'
+ASGI_APPLICATION = 'meidaku.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
 
 
 # Database

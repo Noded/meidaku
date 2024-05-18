@@ -7,8 +7,3 @@ from django.shortcuts import render
 
 def index(request):
     return render(request, 'main/index.html')
-
-
-@login_required
-def paperchat(request):
-    return render(request, 'main/paperchat.html')
