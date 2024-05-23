@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мессенджер</title>
+    <link rel="stylesheet" href="{% static 'chats/paperchatstyle.css' %}">
+</head>
+<body>
+    <div id="user-list-panel">
+        <input type="text" id="user-search" placeholder="Поиск..."> <!--меняй как хочешь -->
+        <ul id="user-list"> <!--меняй как хочешь -->
+            <!-- Добавьте пользователей по мере необходимости -->
+        </ul>
+    </div>
+    <div id="chat-panel">
+        <div id="chat-title">{{ user.username }} / <a href="{% url 'chats:index' %}">Home</a></div> <!--меняй как хочешь -->
+        <div id="chat-window">
+            {% if messages %}
+              {% for message in messages %}
+              <p>{{ message.author }}: {{ message.content }}</p> <!--можешь добавить в p класс -->
+              {% endfor %}
+            {% endif %}
+            <!-- Здесь будут отображаться сообщения -->
+        </div>
+        <textarea id="message-input" placeholder="Введите сообщение..."></textarea> <!--меняй как хочешь -->
+        <button id="send-button">Отправить</button> <!--меняй как хочешь -->
+    </div>
+
+<script>
+const base_url = 'ws://' + window.location.hostname + ':' + window.location.port + '/ws/chats/chat/' + "{{ uuid }}" + '/';
+
+const chatSocket = new WebSocket(base_url);
+
+chatSocket.onopen = function(e) {
+    console.log("Connection established");
+};
+
+chatSocket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    document.querySelector('#chat-window').innerHTML += '<p>' + data.username + ': ' + data.message + '</p>';
+};
+
+chatSocket.onclose = function(e) {
+    console.log('Connection closed');
+};
+
+chatSocket.onerror = function(e) {
+    console.error('WebSocket error:', e);
+};
+
+document.querySelector('#send-button').onclick = function(e) {
+    const messageInputDom = document.querySelector('#message-input');
+    const message = messageInputDom.value;
+    const username = "{{ user.username }}";
+    chatSocket.send(JSON.stringify({
+        'username': username,
+        'message': message,
+    }));
+    messageInputDom.value = '';
+};
+
+
+</script>
+</body>
+</html>

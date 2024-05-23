@@ -16,11 +16,15 @@ Including another URLconf
 """
 from django.urls import path
 
-from . import views
+from chats import views
 
-app_name = 'paper'
+app_name = 'chats'
 
 urlpatterns = [
-    path('paperchat/', views.paperchat, name='paperchat'),
-    path('<str:room_name>/', views.room, name='room'),
+    path('', views.index, name='index'),
+    path('chat/<uuid:uuid>', views.open_chat, name='chat'),
+    path('new_group', views.new_group, name='new_group'),
+    path('join_group/<uuid:uuid>', views.join_group, name='join_group'),
+    path('leave_group/<uuid:uuid>', views.leave_group, name='leave_group'),
+    path('remove_group/<uuid:uuid>', views.remove_group, name='remove_group'),
 ]

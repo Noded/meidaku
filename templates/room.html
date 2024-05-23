@@ -12,7 +12,7 @@
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-        const chatSocket = new WebSocket(
+        let chatSocket = new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/paper/'

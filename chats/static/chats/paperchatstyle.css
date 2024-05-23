@@ -1,0 +1,324 @@
+/*общии стили в ключая стили для body*/
+body {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background-color: #1a1a1a;
+    scrollbar-width: none;
+    display: flex;
+    -ms-overflow-style: none;
+}
+
+::-moz-scrollbar{
+    width: 0px;
+    height: 0px;
+}
+
+div::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    overflow-x: none;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #333333;
+}
+
+input[type="submit"] {
+    background-color: #e74c3c;
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #ff3333;
+}
+
+/*шапка*/
+header {
+    background-color: #333333;
+    padding: 20px;
+    margin-bottom: 30px;
+    height: 80px;
+}
+
+/* Стили для меню */
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    color: #d4d4d4;
+    height: 100%;
+}
+
+.menu_logo {
+    display: flex;
+    align-items: center;
+}
+
+.menu_logo img {
+    height: 150px;
+    margin-right: 10px;
+}
+
+.menu_text {
+    color: #d4d4d4;
+    font-size: 28px;
+    margin-right: 30px;
+}
+
+#portabl__menu_text{
+    margin-right: 150px;
+    font-size: 16px;
+    display: none;
+}
+
+#very_portabl__menu_text{
+    font-size: 16px;
+    display: none;
+    margin: 0 auto;
+}
+
+.link {
+    display: flex;
+    align-items: center;
+}
+
+/* Стили для ссылок в меню */
+.menu_link {
+    padding: 5px;
+    margin: 5px;
+    font-weight: bold;
+    color: #d4d4d4;
+    text-decoration: none;
+    transition: color 0.25s; 
+}
+
+.menu_link:hover {
+    color: #fa2758; 
+    text-decoration: underline;
+}
+
+
+/*обычная секция*/
+.section {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #333333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: #e74c3c;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hint{
+    width: 24px;
+    height: auto; 
+}
+
+.toggle-checkbox-wrapper {
+    margin-right: 20px;
+}
+
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.subtitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #c0392b;
+}
+
+.content {
+    margin-top: 15px;
+    color: #ecf0f1;
+}
+
+/*выподяющий контейнер*/
+.expandable {
+    display: none;
+}
+
+
+/*стили кнопок*/
+.button {
+    background-color: #ff3333;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #ff6666;
+}
+
+/*модальное окно*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #333;
+    width: 40%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content p {
+    color: #e74c3c;
+}
+
+/*переключение между стилями контейнеров*/
+.toggle-checkbox {
+    position: absolute;
+    left: -9999px;
+}
+
+.toggle-checkbox:checked + .expandable {
+    display: block;
+}
+
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.user {
+    padding: 20px;
+    cursor: pointer;
+}
+
+.user:hover {
+    background-color: #1a1a1a;
+}
+
+#user-list-panel {
+    width: 300px;
+    border-right: 1px solid #333;
+    overflow-y: auto;
+}
+
+#chat-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-title {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#chat-window {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.sent {
+    background-color: #007bff;
+    align-self: flex-end;
+    color: white;
+}
+
+.received {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+    color: black;
+}
+
+#message-input {
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 4px;
+}
+
+#send-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#send-button:hover {
+    background-color: #0056b3;
+}
