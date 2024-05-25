@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="margin-top: 3px;">Home Page</h1> <!--меняй как хочешь -->
+ {% if user not in groups %}
+    <h2>Hi {{ user }}!</h2>
+    <p>You are not a member of any groups.</p>
+     <a href="{% url 'chats:new_group' %}" class="btn btn-secondary">Создать чат</a>
+
+     <h2>Поиск группы</h2>
+        <form action="{% url 'chats:index' %}" method="post">
+            {% csrf_token %}
+            {% for f in form %}
+            	<p><label for="{{ f.id_for_label }}">{{ f.label }}:</label>{{ f }}</p>
+                <button type="submit" class="btn btn-primary">Join Group</button>
+            {% endfor %}
+        </form>
+
+
+{#         <form method="POST">#}
+{#                {% csrf_token %}#}
+{#                 <div class="form-error">{{ form.non_field_errors }}</div>#}
+{#                    <p><label for="{{ form.id_for_label.uuid_group }}">{{ form.label.uuid_group }}:</label>{{ form.uuid_group }}</p>#}
+{#                        <div class="form-error">{{ f.errors }}</div>#}
+{#    <input id="chat-message-input" type="text" size="100"><br>#}
+{% endif %}
+
+     {% for group in groups %}
+         <div id="{{ group.uuid }}">
+             <li><a>{{ group.uuid }}</a></li>
+             <a href="{% url 'chats:chat' uuid=group.uuid %}">Open</a>
+             <a href="{% url 'chats:leave_group' uuid=group.uuid %}">Leave</a>
+             <a href="{% url 'chats:remove_group' uuid=group.uuid %}">Delete</a>
+         </div>
+     {% endfor %}
+
+</body>
+</html>

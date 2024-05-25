@@ -40,7 +40,7 @@ chatSocket.onopen = function(e) {
 
 chatSocket.onmessage = function(event) {
     const data = JSON.parse(event.data);
-    document.querySelector('#chat-window').innerHTML += '<p>' + data.username + ': ' + data.message + '</p>';
+    document.querySelector('#chat-window').innerHTML += '<p>' + data.message + '</p>';
 };
 
 chatSocket.onclose = function(e) {
@@ -61,7 +61,6 @@ document.querySelector('#send-button').onclick = function(e) {
     }));
     messageInputDom.value = '';
 };
-
 
 </script>
 </body>

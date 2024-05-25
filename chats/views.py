@@ -1,6 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+import uuid
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import HttpResponseNotAllowed, HttpResponseBadRequest
+from django.shortcuts import render, redirect, get_object_or_404
+
+from chats.forms import Join_To_Group
 from chats.models import Group
 
 
@@ -8,8 +13,18 @@ from chats.models import Group
 
 @login_required
 def index(request):
-    groups = Group.objects.all()
-    return render(request, 'chats/home.html', {'groups': groups})
+    if request.method == 'POST':
+        form = Join_To_Group(request.POST)
+        if form.is_valid():
+            uuid = form.cleaned_data['uuid']
+            group = get_object_or_404(Group, uuid=uuid)
+            group.members.add(request.user)
+            group.save()
+    else:
+        form = Join_To_Group()
+    user = request.user
+    groups = Group.objects.filter(members=user)
+    return render(request, 'chats/home(new).html', {'groups': groups, 'user': user, 'form': form})
 
 
 @login_required
@@ -22,16 +37,7 @@ def new_group(request):
 
 
 @login_required
-def join_group(request, uuid):
-    u = request.user
-    groups = Group.objects.get(uuid=uuid)
-    groups.members.add(u)
-    groups.save()
-    return redirect('chats:index')
-
-
-@login_required
-def leave_group(request, uuid):
+def leave_group(request, uuid=None):
     u = request.user
     groups = Group.objects.get(uuid=uuid)
     groups.members.remove(u)
