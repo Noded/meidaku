@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'main/styles/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'main/main.js' %}"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="menu">
+            <div class="menu_logo">
+                <div class="menu_text" id="unportabl__menu_text"><h1>MAIDaCU</h1></div>
+                <div class="menu_text" id="portabl__menu_text"><p>MAIDaCU</p></div>
+                <div class="menu_text" id="very_portabl__menu_text"><p>MAIDaCU</p></div>
+                <div class="active_page">
+                    <a href="{% url 'main:index' %}" class="menu_link menu_link-active">Home</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="register">
+         <form id="registrationForm" method="POST">
+                {% csrf_token %}
+                 <div class="form-error">{{ form.non_field_errors }}</div>
+                    {% for f in form %}
+                    <p><label for="{{ f.id_for_label }}">{{ f.label }}:</label>{{ f }}</p>
+                        <div class="form-error">{{ f.errors }}</div>
+                {% endfor %}
+
+{#                <label for="username">Имя пользователя:</label>#}
+{#                <input type="text" id="username" name="name" required placeholder="Введите ваше имя пользователя">#}
+{##}
+{#                <label for="login">Логин:</label>#}
+{#                <input type="text" id="login" name="nickname" required placeholder="Выберите уникальный логин">#}
+{##}
+{#                <label for="email">Почта:</label>#}
+{#                <input type="email" id="email" name="email" required placeholder="Введите ваш email">#}
+{##}
+{#                <label for="password">Пароль:</label>#}
+{#                <input type="password" id="password" name="password" required placeholder="Введите пароль">#}
+
+                <input type="submit" value="Зарегистрироваться">
+            </form>
+    </div>
+
+
+<footer>
+    <div class="footer_left">
+        <p>
+            MAIDaCU progect с заботай к работникам 
+        </p>
+        <p>© MAIDaCU progect</p>
+    </div>
+    <div class="footer_right">
+        <div class="footer_list">
+            <p>Frontend разработчик</p>
+            <div class="name_person">
+                <h3>Роберт</h3>
+
+            </div>
+        </div>
+
+        <div class="footer_list">
+            <p>Beckend разработчик</p>
+            <div class="name_person">
+                <h3>Нед</h3>
+            </div>
+        </div>
+
+        <div class="footer_list">
+            <p>Главный рeдактор</p>
+            <div class="name_person">
+                <h3>Аста</h3>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
