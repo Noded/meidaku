@@ -14,7 +14,6 @@ class LoginUser(LoginView):
     form_class = forms.LoginUserForm
     template_name = 'users/login.html'
 
-
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))

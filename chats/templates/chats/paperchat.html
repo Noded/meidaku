@@ -1,67 +1,200 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мессенджер</title>
-    <link rel="stylesheet" href="{% static 'chats/paperchatstyle.css' %}">
-</head>
-<body>
-    <div id="user-list-panel">
-        <input type="text" id="user-search" placeholder="Поиск..."> <!--меняй как хочешь -->
-        <ul id="user-list"> <!--меняй как хочешь -->
-            <!-- Добавьте пользователей по мере необходимости -->
-        </ul>
-    </div>
-    <div id="chat-panel">
-        <div id="chat-title">{{ user.username }} / <a href="{% url 'chats:index' %}">Home</a></div> <!--меняй как хочешь -->
-        <div id="chat-window">
-            {% if messages %}
-              {% for message in messages %}
-              <p>{{ message.author }}: {{ message.content }}</p> <!--можешь добавить в p класс -->
-              {% endfor %}
-            {% endif %}
-            <!-- Здесь будут отображаться сообщения -->
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paperchat</title>
+    <link rel="stylesheet" href="{% static 'chats/css/style.css' %}" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="user-profile">
+          <div class="avatar"></div>
+          <button class="theme-toggle">🌙</button>
+      </div>
+      <div class="chats-list">
+          {% for group in groups %}
+          <div class="chat-item" id="{{ group.uuid }}" onclick="window.location.href='{% url 'chats:chat' uuid=group.uuid %}'">
+              <div class="chat-item-header">
+                  <div class="chat-name">
+                      {{ group.name }}
+                      <button class="copy-uuid-button" onclick="copyUUID(event, '{{ group.uuid }}')" title="Copy UUID">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                          </svg>
+                      </button>
+                  </div>
+                  <div class="chat-actions">
+                      <a href="{% url 'chats:leave_group' uuid=group.uuid %}" class="chat-action-button leave-btn" onclick="event.stopPropagation()">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                          </svg>
+                      </a>
+                      <a href="{% url 'chats:remove_group' uuid=group.uuid %}" class="chat-action-button delete-btn" onclick="event.stopPropagation()">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                          </svg>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+      </div>
+      <button class="add-chat-button">+</button>
+  </div>
+
+    <div class="main-chat">
+      <div class="chat-header">
+        {% for group in groups %}
+        <h2>{{group.name}}</h2>
+        {% endfor %}
+      </div>
+      <div class="messages-area">
+        {% for message in messages %}
+            {% if messages %}  
+                {% if message.author == user %}
+        <div class="message sent">
+          <div class="message-content">
+            <div class="message-sender">{{ message.author }}</div>
+            <div class="message-text">{{ message.content }}</div>
+          </div>
         </div>
-        <textarea id="message-input" placeholder="Введите сообщение..."></textarea> <!--меняй как хочешь -->
-        <button id="send-button">Отправить</button> <!--меняй как хочешь -->
+                {% else %}
+        <div class="message">
+          <div class="message-content">
+            <div class="message-sender">{{ message.author }}</div>
+            <div class="message-text">{{ message.content }}</div>
+          </div>
+        </div>
+                {% endif %} 
+            {% endif %}
+        {% endfor %} 
+      </div>
+      <div class="input-area">
+        <input
+          type="text"
+          class="message-input"
+          placeholder="Введите текст..."
+        />
+        <button class="send-button">Отправить</button>
+      </div>
     </div>
 
-<script>
-const base_url = 'ws://' + window.location.hostname + ':' + window.location.port + '/ws/chats/chat/' + "{{ uuid }}" + '/';
+    <div class="modal" id="modalContainer">
 
-const chatSocket = new WebSocket(base_url);
+      <span class="close-button" onclick="closeModal()">×</span>
+  
+      <!-- Create Group Modal -->
+      <div class="modal-content" id="createGroupModal">
+          <div class="modal-title-container">
+              <h3 class="modal-title">Создание группы</h3>
+          </div>
+          <div class="modal-body">
+              <form id="createGroupForm" action="{% url 'chats:index' %}" method="post">
+                  {% csrf_token %}
+                  <label for="{{ create_form.name.id_for_label }}" class="custom-label"></label>
+                  <input type="text" 
+                         name="{{ create_form.name.name }}" 
+                         id="groupNameInput" 
+                         class="modal-input" 
+                         placeholder="Название группы...">
+                  {% if create_form.name.errors %}
+                      <div class="error-messages">
+                          {{ create_form.name.errors }}
+                      </div>
+                  {% endif %}
+                  <input type="hidden" name="action" value="create">
+                  <div class="modal-buttons">
+                      <button type="submit" class="modal-button primary">Создать</button>
+                      <button type="button" class="modal-button secondary">Присоединиться к группе</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  
+      <!-- Join Group Modal -->
+      <div class="modal-content" id="joinGroupModal" style="display: none;">
+          <div class="modal-title-container">
+              <h3 class="modal-title">Добавить новую группу</h3>
+          </div>
+          <div class="modal-body">
+              <form id="joinGroupForm" action="{% url 'chats:index' %}" method="post">
+                  {% csrf_token %}
+                      <label for="{{ join_form.uuid.id_for_label }}" class="custom-label"></label>
+                      <input type="text" 
+                             name="{{ join_form.uuid.name }}" 
+                             id="uuidInput" 
+                             class="uuid-input" 
+                             placeholder="UUID...">
+                      {% if join_form.uuid.errors %}
+                          <div class="error-messages">
+                              {{ join_form.uuid.errors }}
+                          </div>
+                      {% endif %}
+                  <input type="hidden" name="action" value="join">
+                  {% comment %} <input type="text" class="uuid-input" placeholder="UUID..." id="uuidInput" for="{{ f.id_for_label }}"> {% endcomment %}
+                  <div class="modal-buttons">
+                      <button type="submit" class="modal-button primary">Присоединиться</button>
+                      <button type="button" class="modal-button secondary">Создать группу</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
 
-chatSocket.onopen = function(e) {
+<script>// WebSocket connect
+  const base_url =
+    "ws://" +
+    window.location.hostname +
+    ":" +
+    window.location.port +
+    "/ws/chats/chat/" +
+    "{{ uuid }}" +
+    "/";
+
+  const chatSocket = new WebSocket(base_url);
+
+  chatSocket.onopen = function (e) {
     console.log("Connection established");
-};
+  };
 
-chatSocket.onmessage = function(event) {
+  chatSocket.onclose = function (e) {
+    console.log("Connection closed");
+  };
+
+  chatSocket.onerror = function (e) {
+    console.error("WebSocket error:", e);
+  };
+
+  chatSocket.onmessage = function (event) {
     const data = JSON.parse(event.data);
-    document.querySelector('#chat-window').innerHTML += '<p>' + data.message + '</p>';
-};
 
-chatSocket.onclose = function(e) {
-    console.log('Connection closed');
-};
+    document.querySelector(".messages-area").innerHTML += `
+        <div class="message ${"{{ user }}" == data.username ? "sent" : ""}">
+            <div class="message-content">
+                <div class="message-sender">${data.username}</div>
+                <div class="message-text">${data.message}</div>
+            </div>
+        </div>`;
+  };
 
-chatSocket.onerror = function(e) {
-    console.error('WebSocket error:', e);
-};
-
-document.querySelector('#send-button').onclick = function(e) {
-    const messageInputDom = document.querySelector('#message-input');
-    const message = messageInputDom.value;
+  document.addEventListener("DOMContentLoaded", function () {
     const username = "{{ user.username }}";
-    chatSocket.send(JSON.stringify({
-        'username': username,
-        'message': message,
-    }));
-    messageInputDom.value = '';
-};
 
-</script>
-</body>
+    document.querySelector(".send-button").onclick = function (e) {
+      const messageInputDom = document.querySelector(".message-input");
+      const message = messageInputDom.value;
+      chatSocket.send(
+        JSON.stringify({
+          username: username,
+          message: message,
+        })
+      );
+      messageInputDom.value = "";
+    };
+  });</script>
+<script src="{% static 'chats/js/script.js' %}"></script>
+  </body>
 </html>

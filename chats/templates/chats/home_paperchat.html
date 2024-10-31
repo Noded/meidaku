@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paperchat home page</title>
+    <link rel="stylesheet" href="{% static 'chats/css/style.css' %}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="user-profile">
+            <div class="avatar"></div>
+            <button class="theme-toggle">🌙</button>
+        </div>
+        <div class="chats-list">
+            {% for group in groups %}
+            <div class="chat-item" id="{{ group.uuid }}" onclick="window.location.href='{% url 'chats:chat' uuid=group.uuid %}'">
+                <div class="chat-item-header">
+                    <div class="chat-name">
+                        {{ group.name }}
+                        <button class="copy-uuid-button" onclick="copyUUID(event, '{{ group.uuid }}')" title="Copy UUID">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chat-actions">
+                        <a href="{% url 'chats:leave_group' uuid=group.uuid %}" class="chat-action-button leave-btn" onclick="event.stopPropagation()">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                            </svg>
+                        </a>
+                        <a href="{% url 'chats:remove_group' uuid=group.uuid %}" class="chat-action-button delete-btn" onclick="event.stopPropagation()">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <button class="add-chat-button">+</button>
+    </div>
+
+    <div class="main-chat">
+        <div class="chat-header">
+            <h2>Выберите чат</h2>
+        </div>
+        <div class="messages-area">
+        </div>
+        <div class="input-area">
+            <input type="text" class="message-input" placeholder="Введите текст...">
+            <button class="send-button">Отправить</button>
+        </div>
+    </div>
+
+<div class="modal" id="modalContainer">
+
+    <span class="close-button" onclick="closeModal()">×</span>
+
+    <!-- Create Group Modal -->
+    <div class="modal-content" id="createGroupModal">
+        <div class="modal-title-container">
+            <h3 class="modal-title">Создание группы</h3>
+        </div>
+        <div class="modal-body">
+            <form id="createGroupForm" action="{% url 'chats:index' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+
+                <label for="{{ create_form.name.id_for_label }}" class="custom-label"></label>
+                <input type="text" 
+                       name="{{ create_form.name.name }}" 
+                       id="groupNameInput" 
+                       class="modal-input" 
+                       placeholder="Название группы...">
+                {% if create_form.name.errors %}
+                    <div class="error-messages">
+                        {{ create_form.name.errors }}
+                    </div>
+                {% endif %}
+                <div class="modal-buttons">
+                    <button type="submit" class="modal-button primary">Создать</button>
+                    <button type="button" class="modal-button secondary">Присоединиться к группе</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Join Group Modal -->
+    <div class="modal-content" id="joinGroupModal" style="display: none;">
+        <div class="modal-title-container">
+            <h3 class="modal-title">Добавить новую группу</h3>
+        </div>
+        <div class="modal-body">
+            <form id="joinGroupForm" action="{% url 'chats:index' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="join">
+
+                    <label for="{{ join_form.uuid.id_for_label }}" class="custom-label"></label>
+                    <input type="text" 
+                           name="{{ join_form.uuid.name }}" 
+                           id="uuidInput" 
+                           class="uuid-input" 
+                           placeholder="UUID...">
+                    {% if join_form.uuid.errors %}
+                        <div class="error-messages">
+                            {{ join_form.uuid.errors }}
+                        </div>
+                    {% endif %}
+                {% comment %} <input type="text" class="uuid-input" placeholder="UUID..." id="uuidInput" for="{{ f.id_for_label }}"> {% endcomment %}
+                <div class="modal-buttons">
+                    <button type="submit" class="modal-button primary">Присоединиться</button>
+                    <button type="button" class="modal-button secondary">Создать группу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    
+<script src="{% static 'chats/js/script.js' %}"></script>
+</body>
+</html>

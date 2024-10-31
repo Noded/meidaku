@@ -25,20 +25,44 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
+        """
+        Receives a message from JavaScript, saves it to the database,
+        and sends it to the chat group with the username in <strong> tags.
+
+        Args:
+            text_data (str): JSON text data message from JavaScript. Expected to contain 'message' and optionally 'username'.
+
+        Example:
+            text_data = '{"message": "Hello, world!", "username": "User123"}'
+        """
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         username = text_data_json.get('username')
-
+        
         await save_message_to_db(username, message, self.room_uuid)
 
         await self.channel_layer.group_send(
-            self.room_group_name, {'type': 'chat_message', 'message': f'{username}: {message}'}
+            self.room_group_name, {'type': 'chat_message', 
+                                   'message': message,
+                                   'username': username}
         )
 
     async def chat_message(self, event):
-        message = event['message']
+        """
+        Receives a chat message event from the group and sends it to the WebSocket.
 
-        await self.send(text_data=json.dumps({'message': message}))
+        Args:
+            event (dict): Event data containing the message to be sent to the WebSocket.
+                          Expected to contain 'message'.
+
+        Example:
+            event = {'message': '<strong>User123</strong>: Hello, world!'}
+        """
+        message = event['message']
+        username = event['username']
+
+        await self.send(text_data=json.dumps({'message': message,
+                                              'username': username}))
 
 
 @database_sync_to_async

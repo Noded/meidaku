@@ -8,7 +8,7 @@ class LoginUserForm(AuthenticationForm):
                                widget=forms.TextInput(attrs={'id': 'username'}))
     password = forms.CharField(label='Пароль', max_length=100,
                                widget=forms.PasswordInput(attrs={'id': 'password'}))
-    email = forms.EmailField(label='Почта', widget=forms.TextInput(attrs={'id': 'email'}))
+    # email = forms.EmailField(label='Почта', widget=forms.TextInput(attrs={'id': 'email'}))
 
     class Meta:
         model = get_user_model()
